@@ -1,8 +1,19 @@
-# freeCodeCamp Relational Databases: Study Notes
+# freeCodeCamp Relational Databases: Study Notes and Projects
 
-My personal study notes from the freeCodeCamp relational databases material, rewritten to be **scannable, practical, and easy to review**. They cover the tools you need around the database too: the editor, the terminal, Bash, and Git.
+My notes and project work from the freeCodeCamp relational databases material. The notes are rewritten to be **scannable, practical, and easy to review**, and the projects are the PostgreSQL and Bash builds I completed along the way.
 
-Every note uses the same structure for each concept:
+## Repo Layout
+
+```text
+freecodecamp-relational-databases/
+├── README.md
+├── notes/        # study notes, numbered in curriculum order
+└── projects/     # certification projects (SQL dumps and Bash scripts)
+```
+
+## Notes
+
+Each note uses the same structure for every concept:
 
 - **What it is:** a plain-language definition
 - **The Everyday Analogy:** a real-world comparison to make it stick
@@ -10,38 +21,28 @@ Every note uses the same structure for each concept:
 - **Quick Example:** a short code block or command
 - A closing **Dev Tip** or **Production Pitfall** for each major section, plus a cheat sheet and a Quick Check quiz with collapsible answers
 
-## The Notes
-
 | # | Note | What is inside |
 |---|---|---|
-| 1 | [Code Editors and VS Code](./code-editors-and-vscode.md) | Editors vs IDEs, installing VS Code, workspaces, Live Server, keyboard shortcuts, useful extensions |
-| 2 | [Bash Fundamentals and the Command Line](./bash-fundamentals-and-the-command-line.md) | Terminal vs shell vs command line, shortcuts, core Bash commands, options and flags, keyboard layout setup |
-| 3 | [PostgreSQL and Relational Databases](./postgresql-and-relational-databases.md) | Relational vs NoSQL, installing PostgreSQL, SQL basics, data types, CRUD, keys, relationships, joins, psql commands |
-| 4 | [SQL Normalization, Injection, and the N+1 Problem](./sql-normalization-injection-and-n-plus-one.md) | Normal forms (1NF to BCNF), preventing SQL injection, spotting and fixing N+1 queries |
-| 5 | [Git, GitHub, and Nano](./git-github-and-nano.md) | Nano, Git setup, repos, SSH and GPG keys, branching, pull requests, code review, GitHub Pages, `.gitignore`, CI/CD with GitHub Actions |
+| 01 | [Code Editors](./notes/01.code-editors.md) | Editors vs IDEs, installing VS Code, workspaces, Live Server, keyboard shortcuts, useful extensions |
+| 02 | [Bash Fundamentals](./notes/02.bash-fundamentals.md) | Terminal vs shell vs command line, shortcuts, core Bash commands, options and flags, keyboard layout setup |
+| 03 | [SQL and PostgreSQL](./notes/03.sql-%26-postgresql.md) | Relational vs NoSQL, installing PostgreSQL, SQL basics, data types, CRUD, keys, relationships, joins, psql commands |
+| 04 | [Bash Scripting](./notes/04.bash-scripting.md) | Shebang, variables, `[[ ]]` and `(( ))`, conditionals, loops, arrays, functions, `$RANDOM`, file permissions |
+| 05 | [SQL and Bash](./notes/05.sql-normalization-injection-and-n-plus-one.md) | Normal forms (1NF to BCNF), preventing SQL injection, spotting and fixing the N+1 problem |
+| 06 | [Git, GitHub, and Nano](./notes/06.git-github-and-nano.md) | Nano, Git setup, repos, SSH and GPG keys, branching, pull requests, code review, GitHub Pages, `.gitignore`, CI/CD with GitHub Actions |
 
-## Suggested Study Order
+The numbers follow the order of the curriculum, so reading top to bottom works as a study path.
 
-1. **Set up your workspace:** [Code Editors and VS Code](./code-editors-and-vscode.md)
-2. **Learn the terminal:** [Bash Fundamentals](./bash-fundamentals-and-the-command-line.md)
-3. **Learn databases and SQL:** [PostgreSQL and Relational Databases](./postgresql-and-relational-databases.md)
-4. **Design and protect them:** [Normalization, Injection, and N+1](./sql-normalization-injection-and-n-plus-one.md)
-5. **Version and ship your work:** [Git, GitHub, and Nano](./git-github-and-nano.md)
+## Projects
 
-## Topics at a Glance
+| Project | What it is | Files |
+|---|---|---|
+| [Celestial Bodies Database](./projects/celestial-bodies-database/) | A PostgreSQL database of galaxies, stars, planets, and moons | [`universe.sql`](./projects/celestial-bodies-database/universe.sql) |
+| [World Cup Database](./projects/world-cup-database/) | Bash scripts that load World Cup game data into PostgreSQL and query it | [`worldcup.sql`](./projects/world-cup-database/worldcup.sql), [`insert_data.sh`](./projects/world-cup-database/insert_data.sh), [`queries.sh`](./projects/world-cup-database/queries.sh) |
+| [Salon Appointment Scheduler](./projects/salon-appointment-scheduler/) | An interactive Bash script that books salon appointments using a PostgreSQL database | [`salon.sql`](./projects/salon-appointment-scheduler/salon.sql), [`salon.sh`](./projects/salon-appointment-scheduler/salon.sh) |
 
-- [x] Code editors, IDEs, and VS Code
-- [x] Terminal, shell, and Bash commands
-- [x] Relational databases and PostgreSQL
-- [x] SQL: data types, CRUD, keys, relationships, joins
-- [x] Database normalization (1NF, 2NF, 3NF, BCNF)
-- [x] SQL injection and N+1 query problem
-- [x] Git, GitHub, pull requests, and code review
-- [x] GitHub Pages, `.gitignore`, and CI/CD
+## Running the Projects
 
-## Using These Notes
-
-Clone the repo and open the folder in VS Code:
+Clone the repo and open it in VS Code:
 
 ```bash
 git clone git@github.com:Levii17/freecodecamp-relational-databases.git
@@ -49,11 +50,29 @@ cd freecodecamp-relational-databases
 code .
 ```
 
-Tips for getting the most out of them:
+**Restore a database from a dump** (works for the `.sql` files):
+
+```bash
+# each dump creates its own database and connects to it, so start from the default one
+psql --username=freecodecamp --dbname=postgres -f projects/celestial-bodies-database/universe.sql
+```
+
+If the database already exists, drop it first with `DROP DATABASE universe;` or the dump will report an error.
+
+**Run a Bash script** (after restoring its database):
+
+```bash
+chmod +x projects/salon-appointment-scheduler/salon.sh
+./projects/salon-appointment-scheduler/salon.sh
+```
+
+The scripts expect a PostgreSQL user named `freecodecamp` and the matching database name set at the top of each script (`salon`, `worldcup`, and so on). Change the `PSQL` variable if your setup differs.
+
+## Tips for Using the Notes
 
 - **Read, then type.** Run every code block yourself in `psql` or your terminal instead of just reading it.
 - **Use the Quick Check** at the end of each note, then open the answers.
-- **Rebuild from memory.** Each note ends with a practice task. Try it without looking.
+- **Rebuild from memory.** Practice tasks close out most notes. Try them without looking.
 
 ## Notes on Accuracy
 
